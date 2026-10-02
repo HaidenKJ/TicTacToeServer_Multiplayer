@@ -6,7 +6,7 @@ using System.Text;
 
 public class NetworkServer : MonoBehaviour
 {
-    public NetworkDriver networkDriver;
+    [System.NonSerialized] public NetworkDriver networkDriver; // Added [System.NonSerialized] to shut its warning up!
     private NativeList<NetworkConnection> networkConnections;
 
     NetworkPipeline reliableAndInOrderPipeline;
@@ -21,7 +21,7 @@ public class NetworkServer : MonoBehaviour
         networkDriver = NetworkDriver.Create();
         reliableAndInOrderPipeline = networkDriver.CreatePipeline(typeof(FragmentationPipelineStage), typeof(ReliableSequencedPipelineStage));
         nonReliableNotInOrderedPipeline = networkDriver.CreatePipeline(typeof(FragmentationPipelineStage));
-        NetworkEndPoint endpoint = NetworkEndPoint.AnyIpv4;
+        NetworkEndpoint endpoint = NetworkEndpoint.AnyIpv4;
         endpoint.Port = NetworkPort;
 
         int error = networkDriver.Bind(endpoint);
